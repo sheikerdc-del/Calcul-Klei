@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>Калькулятор расхода: клей и кладочная смесь (RU)</title>
+	<style>
+		:root {
+			--bg: #0f172a;
+			--card: #111827;
+			--accent: #22c55e;
+			--text: #e5e7eb;
+			--muted: #94a3b8;
+			--border: #1f2937;
+			--input: #0b1220;
+			--bad: #ef4444;
+		}
+
+		html,
+		body {
+			margin: 0;
+			padding: 0;
+			background: var(--bg);
+			color: var(--text);
+			font: 14px/1.45 system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+		}
+
+		.container {
+			max-width: 980px;
+			margin: 24px auto;
+			padding: 0 16px;
+		}
+
+		h1 {
+			font-size: 22px;
+			margin: 0 0 10px 0;
+		}
+
+		h2 {
+			font-size: 18px;
+			margin: 0 0 12px 0;
+		}
+
+		p.lead {
+			color: var(--muted);
+			margin: 4px 0 16px;
+		}
+
+		.tabs {
+			display: flex;
+			gap: 8px;
+			margin: 16px 0;
+			flex-wrap: wrap;
+		}
+
+		.tab-btn {
+			border: 1px solid var(--border);
+			background: var(--card);
+			color: var(--text);
+			padding: 8px 12px;
+			border-radius: 8px;
+			cursor: pointer;
+		}
+
+		.tab-btn.active {
+			border-color: var(--accent);
+			color: white;
+		}
+
+		.grid {
+			display: grid;
+			gap: 12px;
+			grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+		}
+
+		.card {
+			background: var(--card);
+			border: 1px solid var(--border);
+			border-radius: 12px;
+			padding: 16px;
+		}
+
+		.row {
+			display: flex;
+			gap: 10px;
+			align-items: center;
+		}
+
+		label {
+			display: block;
+			font-weight: 600;
+			margin-bottom: 6px;
+		}
+
+		.help {
+			color: var(--muted);
+			font-weight: 400;
+			font-size: 12px;
+			margin-top: 4px;
+		}
+
+		input,
+		select {
+			width: 100%;
+			box-sizing: border-box;
+			background: var(--input);
+			color: var(--text);
+			border: 1px solid var(--border);
+			border-radius: 8px;
+			padding: 8px 10px;
+		}
+
+		input[type="number"]::-webkit-outer-spin-button,
+		input[type="number"]::-webkit-inner-spin-button {
+			-webkit-appearance: none;
+			margin: 0;
+		}
+
+		.result {
+			background: #0b1220;
+			border: 1px dashed var(--border);
+			border-radius: 10px;
+			padding: 12px;
+		}
+
+		.result strong {
+			color: var(--accent);
+		}
+
+		.muted {
+			color: var(--muted);
+		}
+
+		details {
+			margin-top: 8px;
+		}
+
+		summary {
+			cursor: pointer;
+			color: var(--muted);
+		}
+
+		.footer {
+			color: var(--muted);
+			font-size: 12px;
+			margin-top: 16px;
+		}
+
+		.bad {
+			color: var(--bad);
+		}
+
+		.row>span {
+			color: var(--muted);
+		}
+	</style>
+</head>
+
+<body>
+	<div class="container">
+		<h1>Калькулятор расхода: клей для плитки и кладочная смесь</h1>
+		<p class="lead">Локализовано для РФ: русские подписи, формат чисел ru-RU, типовые плотности и форматы кирпича
+			NF. Результаты ориентировочные, рекомендуем 5–10% запас.</p>
+		<div class="tabs">
+			<button class="tab-btn active" data-tab="tile">Клей для плитки</button>
+			<button class="tab-btn" data-tab="brick">Раствор для кирпича</button>
+		</div>
+
+		<!-- КЛЕЙ ДЛЯ ПЛИТКИ -->
+		<section id="tile" class="card">
+			<h2>Калькулятор клея для плитки/клинкера/керамогранита</h2>
+			<div class="grid">
+				<div>
+					<label for="tile-area">Площадь облицовки, м²</label>
+					<input id="tile-area" type="number" inputmode="decimal" min="0" step="0.01" value="35">
+					<div class="help">Суммарная площадь поверхности под облицовку</div>
+				</div>
+				<div>
+					<label for="tile-material">Материал плитки</label>
+					<select id="tile-material">
+            <option value="ceramic">Керамическая плитка</option>
+            <option value="clinker">Клинкерная плитка</option>
+            <option value="porcelain" selected>Керамогранит</option>
+          </select>
+				</div>
+				<div>
+					<label>Размер одной плитки, см</label>
+					<div class="row">
+						<input id="tile-w" type="number" inputmode="numeric" min="1" step="1" value="60" aria-label="Ширина, см" />
+						<span>×</span>
+						<input id="tile-h" type="number" inputmode="numeric" min="1" step="1" value="60" aria-label="Высота, см" />
+          </div>
+						<div class="help">Влияет на коэффициент крупного формата и бэк-баттеринг</div>
+					</div>
+					<div>
+						<label for="trowel">Зуб шпателя, мм</label>
+						<select id="trowel">
+            <option value="6">6</option>
+            <option value="8">8</option>
+            <option value="10" selected>10</option>
+            <option value="12">12</option>
+          </select>
+						<div class="help">Базовый расход ≈ 0.5 кг/м² на 1 мм зуба</div>
+					</div>
+					<div>
+						<label for="surface-factor">Основание/рельеф (коэф.)</label>
+						<select id="surface-factor">
+            <option value="1.00" selected>Ровное (1.00)</option>
+            <option value="1.10">Небольшие неровности/рельеф (1.10)</option>
+            <option value="1.20">Выраженные неровности/рельеф (1.20)</option>
+          </select>
+					</div>
+					<div>
+						<label for="back-buttering">Бэк-баттеринг</label>
+						<select id="back-buttering">
+            <option value="false" selected>Нет</option>
+            <option value="true">Да</option>
+          </select>
+						<div class="help">Нанесение клея на тыльную сторону плитки</div>
+					</div>
+					<div>
+						<label for="bag-adhesive">Вес мешка, кг</label>
+						<select id="bag-adhesive">
+            <option value="20">20</option>
+            <option value="25" selected>25</option>
+            <option value="30">30</option>
+          </select>
+					</div>
+					<div>
+						<label for="reserve-adh">Запас, %</label>
+						<input id="reserve-adh" type="number" inputmode="numeric" min="0" max="30" step="1" value="10">
+						<div class="help">Рекомендуется 5–10% для нормальных условий</div>
+					</div>
+				</div>
+
+				<div class="result" id="tile-result" style="margin-top:12px"></div>
+				<details>
+					<summary>Показать подробности расчёта</summary>
+					<div id="tile-details" class="muted" style="margin-top:6px"></div>
+				</details>
+		</section>
+
+		<!-- РАСТВОР ДЛЯ КИРПИЧА -->
+		<section id="brick" class="card" style="display:none">
+			<h2>Калькулятор готовой кладочной смеси (раствора) для кирпича</h2>
+			<div class="grid">
+				<div>
+					<label for="wall-area">Площадь стены, м²</label>
+					<input id="wall-area" type="number" inputmode="decimal" min="0" step="0.01" value="20">
+        </div>
+					<div>
+						<label for="wall-thick">Толщина кладки, м</label>
+						<select id="wall-thick">
+            <option value="0.12">0.12</option>
+            <option value="0.25" selected>0.25</option>
+            <option value="0.38">0.38</option>
+            <option value="0.51">0.51</option>
+          </select>
+						<div class="help">Толщина стены по проекту (в метрах)</div>
+					</div>
+					<div>
+						<label for="brick-format">Формат кирпича (NF)</label>
+						<select id="brick-format">
+            <option value="0.5NF">0.5 NF (250×60×65)</option>
+            <option value="0.7NF_Euro">0.7 NF Euro (250×85×65)</option>
+            <option value="1.0NF" selected>1.0 NF (одинарный 250×120×65)</option>
+            <option value="1.3NF">1.3 NF (≈288×138×65)</option>
+            <option value="1.4NF">1.4 NF (250×120×88)</option>
+            <option value="2.1NF">2.1 NF (двойной 250×120×140)</option>
+            <option value="2.8NF">2.8 NF (250×120×188)</option>
+          </select>
+					</div>
+					<div>
+						<label for="joint-mm">Толщина шва, мм</label>
+						<input id="joint-mm" type="number" inputmode="numeric" min="6" max="15" step="1" value="10">
+						<div class="help">База 10 мм; 8 мм ≈ −10% к раствору; 12 мм ≈ +10%</div>
+					</div>
+					<div>
+						<label for="rho-dry">Плотность сухой смеси, кг/м³</label>
+						<input id="rho-dry" type="number" inputmode="numeric" min="1300" max="1800" step="10" value="1600">
+						<div class="help">Типично 1500–1700 кг/м³ для РФ</div>
+					</div>
+					<div>
+						<label for="bag-mortar">Вес мешка, кг</label>
+						<select id="bag-mortar">
+            <option value="20">20</option>
+            <option value="25" selected>25</option>
+            <option value="30">30</option>
+          </select>
+					</div>
+					<div>
+						<label for="reserve-mortar">Запас, %</label>
+						<input id="reserve-mortar" type="number" inputmode="numeric" min="0" max="30" step="1" value="10">
+        </div>
+					</div>
+
+					<div class="result" id="brick-result" style="margin-top:12px"></div>
+					<details>
+						<summary>Показать подробности расчёта</summary>
+						<div id="brick-details" class="muted" style="margin-top:6px"></div>
+					</details>
+		</section>
+
+		<div class="footer">
+			Примечание: модели расхода — усреднённые. Уточняйте по ТДС вашего производителя и условиям работ
+			(температура, тип основания).
+		</div>
+	</div>
+
+	<script>
+		// Локальный формат чисел
+    const fmt = new Intl.NumberFormat('ru-RU', { maximumFractionDigits: 2 });
+    const fmt3 = new Intl.NumberFormat('ru-RU', { maximumFractionDigits: 3 });
+
+    // Константы/справочники
+    const MATERIAL_FACTORS = {
+      ceramic: 1.00,
+      clinker: 1.10,
+      porcelain: 1.15,
+    };
+
+    const BRICK_MORTAR_SHARE = {
+      '0.5NF': 0.27,
+      '0.7NF_Euro': 0.25,
+      '1.0NF': 0.23,
+      '1.3NF': 0.21,
+      '1.4NF': 0.20,
+      '2.1NF': 0.16,
+      '2.8NF': 0.15,
+    };
+
+    function round2(x) { return Math.round(x * 100) / 100; }
+    function round3(x) { return Math.round(x * 1000) / 1000; }
+    function parseNum(id, fallback = 0) {
+      const el = document.getElementById(id);
+      const v = Number(el.value);
+      return Number.isFinite(v) ? v : fallback;
+    }
+
+    // Коэф. крупного формата и бэк-баттеринга
+    function largeFormatFactor(tileAreaCm2, backButtering) {
+      let f = 1.0;
+      if (tileAreaCm2 > 900) f *= 1.15;
+      if (tileAreaCm2 > 2500) f *= 1.25;
+      if (backButtering) f *= 1.10;
+      return f;
+    }
+
+    // Коррекция по толщине шва (база 10 мм)
+    function jointThicknessCorrection(jointMm) {
+      // 8 мм ≈ 0.9; 12 мм ≈ 1.1 — линейная аппроксимация
+      return 1 + (jointMm - 10) * 0.05; // на 2 мм ≈ ±0.10
+    }
+
+    // Расчёт клея
+    function calcTileAdhesive() {
+      const areaM2 = parseNum('tile-area', 0);
+      const trowelNotchMm = parseInt(document.getElementById('trowel').value, 10);
+      const tileMaterial = document.getElementById('tile-material').value;
+      const w = parseNum('tile-w', 1);
+      const h = parseNum('tile-h', 1);
+      const backButtering = document.getElementById('back-buttering').value === 'true';
+      const surfaceFactor = Number(document.getElementById('surface-factor').value);
+      const bagWeightKg = parseInt(document.getElementById('bag-adhesive').value, 10);
+      const reservePct = parseNum('reserve-adh', 0);
+
+      const tileAreaCm2 = w * h;
+      const baseKgPerM2 = 0.5 * trowelNotchMm; // кг/м²
+      const matFactor = MATERIAL_FACTORS[tileMaterial] ?? 1.0;
+      const formatFactor = largeFormatFactor(tileAreaCm2, backButtering);
+
+      const kgNoReserve = baseKgPerM2 * matFactor * formatFactor * surfaceFactor * areaM2;
+      const kg = kgNoReserve * (1 + reservePct / 100);
+      const bags = Math.ceil(kg / bagWeightKg);
+      const totalWeightKg = bags * bagWeightKg;
+
+      const resBox = document.getElementById('tile-result');
+      const detBox = document.getElementById('tile-details');
+
+      if (areaM2 <= 0) {
+        resBox.innerHTML = '<span class="bad">Введите площадь облицовки &gt; 0</span>';
+        detBox.innerHTML = '';
+        return;
+      }
+
+      resBox.innerHTML = `
+        <div><strong>${fmt.format(round2(kg))} кг</strong> клея (с учётом запаса)</div>
+        <div>Мешков по ${bagWeightKg} кг: <strong>${bags} шт</strong></div>
+        <div>Общий вес: <strong>${fmt.format(totalWeightKg)} кг</strong></div>
+      `;
+
+      detBox.innerHTML = `
+        • Площадь: ${fmt.format(areaM2)} м²<br>
+        • База: ${fmt.format(round2(baseKgPerM2))} кг/м² при зубе ${trowelNotchMm} мм<br>
+        • Коэф. материал: ${fmt.format(matFactor)}; крупный формат/бэк-баттеринг: ${fmt.format(round2(formatFactor))}; основание: ${fmt.format(surfaceFactor)}<br>
+        • Размер плитки: ${w}×${h} см (${fmt.format(tileAreaCm2)} см²)<br>
+        • Без запаса: ${fmt.format(round2(kgNoReserve))} кг; Запас: ${fmt.format(reservePct)}%<br>
+      `;
+    }
+
+    // Расчёт раствора
+    function calcBrickMortar() {
+      const wallAreaM2 = parseNum('wall-area', 0);
+      const wallThicknessM = Number(document.getElementById('wall-thick').value);
+      const brickFormat = document.getElementById('brick-format').value;
+      const jointMm = parseNum('joint-mm', 10);
+      const rhoDry = parseNum('rho-dry', 1600);
+      const bagWeightKg = parseInt(document.getElementById('bag-mortar').value, 10);
+      const reservePct = parseNum('reserve-mortar', 0);
+
+      const masonryVolumeM3 = wallAreaM2 * wallThicknessM;
+      const share = BRICK_MORTAR_SHARE[brickFormat] ?? 0.23;
+      const corr = jointThicknessCorrection(jointMm);
+      const mortarVolumeM3 = masonryVolumeM3 * share * corr;
+      const kgNoReserve = mortarVolumeM3 * rhoDry;
+      const kg = kgNoReserve * (1 + reservePct / 100);
+      const bags = Math.ceil(kg / bagWeightKg);
+      const totalWeightKg = bags * bagWeightKg;
+
+      const resBox = document.getElementById('brick-result');
+      const detBox = document.getElementById('brick-details');
+
+      if (wallAreaM2 <= 0 || wallThicknessM <= 0) {
+        resBox.innerHTML = '<span class="bad">Введите площадь и толщину кладки &gt; 0</span>';
+        detBox.innerHTML = '';
+        return;
+      }
+
+      resBox.innerHTML = `
+        <div><strong>${fmt.format(round2(kg))} кг</strong> сухой кладочной смеси (с учётом запаса)</div>
+        <div>Мешков по ${bagWeightKg} кг: <strong>${bags} шт</strong></div>
+        <div>Общий вес: <strong>${fmt.format(totalWeightKg)} кг</strong></div>
+      `;
+
+      detBox.innerHTML = `
+        • Объём кладки: ${fmt3.format(round3(masonryVolumeM3))} м³<br>
+        • Доля раствора (база 10 мм, формат ${brickFormat}): ${fmt3.format(share)} м³/м³; коррекция по шву (${jointMm} мм): ${fmt3.format(round3(corr))}<br>
+        • Объём раствора: ${fmt3.format(round3(mortarVolumeM3))} м³; плотность: ${fmt.format(rhoDry)} кг/м³<br>
+        • Без запаса: ${fmt.format(round2(kgNoReserve))} кг; Запас: ${fmt.format(reservePct)}%<br>
+      `;
+    }
+
+    // Табы
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const tab = btn.getAttribute('data-tab');
+        document.getElementById('tile').style.display = (tab === 'tile') ? '' : 'none';
+        document.getElementById('brick').style.display = (tab === 'brick') ? '' : 'none';
+      });
+    });
+
+    // Привязка событий для мгновенного пересчёта
+    [
+      'tile-area','tile-material','tile-w','tile-h','trowel','surface-factor','back-buttering','bag-adhesive','reserve-adh'
+    ].forEach(id => document.getElementById(id).addEventListener('input', calcTileAdhesive));
+
+    [
+      'wall-area','wall-thick','brick-format','joint-mm','rho-dry','bag-mortar','reserve-mortar'
+    ].forEach(id => document.getElementById(id).addEventListener('input', calcBrickMortar));
+
+    // Инициализация
+    calcTileAdhesive();
+    calcBrickMortar();
+	</script>
+</body>
+
+</html>
