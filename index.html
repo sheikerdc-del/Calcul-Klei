@@ -38,6 +38,32 @@
     .footer { color: var(--muted); font-size: 12px; margin-top: 16px; }
     .bad { color: var(--bad); }
     .row > span { color: var(--muted); }
+
+    /* Копирайт внизу страницы с медленным появлением */
+    .footer-copyright {
+      position: fixed;
+      bottom: 8px;
+      left: 50%;
+      transform: translate(-50%, 20px);
+      color: var(--muted);
+      font-size: 12px;
+      opacity: 0;
+      animation: copyrightFadeUp 5s ease-out 1s forwards;
+      pointer-events: none;
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    @keyframes copyrightFadeUp {
+      from {
+        opacity: 0;
+        transform: translate(-50%, 20px);
+      }
+      to {
+        opacity: 1;
+        transform: translate(-50%, 0);
+      }
+    }
   </style>
 </head>
 <body>
@@ -214,6 +240,11 @@
     </div>
   </div>
 
+  <!-- Копирайт, медленно появляющийся снизу страницы -->
+  <div class="footer-copyright">
+    © Калькулятор клея и раствора. Муреев Дмитрий
+  </div>
+
   <script>
     // Формат чисел
     const fmt = new Intl.NumberFormat('ru-RU', { maximumFractionDigits: 2 });
@@ -278,7 +309,7 @@
       const reservePct = parseNum('reserve-adh', 0);
 
       if (areaM2 <= 0) {
-        document.getElementById('tile-result').innerHTML = '<span class="bad">Введите площадь облицовки &gt; 0</span>';
+        document.getElementById('tile-result').innerHTML = '<span class="bad">Введите площадь облицовки > 0</span>';
         document.getElementById('tile-details').innerHTML = '';
         return;
       }
@@ -342,7 +373,7 @@
         const rhoDry = parseNum('rho-dry', 1600);
 
         if (wallAreaM2 <= 0 || wallThicknessM <= 0) {
-          document.getElementById('brick-result').innerHTML = '<span class="bad">Введите площадь и толщину кладки &gt; 0</span>';
+          document.getElementById('brick-result').innerHTML = '<span class="bad">Введите площадь и толщину кладки > 0</span>';
           document.getElementById('brick-details').innerHTML = '';
           return;
         }
@@ -362,7 +393,7 @@
         const brickCount = parseNum('brick-count', 0);
         let basePer1000 = parseNum('base-per-1000', 0); // кг на 1000 шт при 10 мм
         if (brickCount <= 0) {
-          document.getElementById('brick-result').innerHTML = '<span class="bad">Введите количество кирпичей &gt; 0</span>';
+          document.getElementById('brick-result').innerHTML = '<span class="bad">Введите количество кирпичей > 0</span>';
           document.getElementById('brick-details').innerHTML = '';
           return;
         }
